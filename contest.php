@@ -340,6 +340,8 @@ if (isset($_GET['cid'])) {
         </div>
     </div>
 </div>
+
+<?php require_once "blue-footer.php"?>
 <script type="text/javascript">
     var diff = new Date("<?php echo date("Y/m/d H:i:s")?>").getTime() - new Date().getTime();
     //alert(diff);
