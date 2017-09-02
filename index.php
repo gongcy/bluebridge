@@ -100,7 +100,6 @@ require_once 'config.php';
 <div class="am-g">
     <h4 style="text-align:center; margin:0; color:red;">
         <?php require_once 'config.php';?>
-<!--        <br/>-->
         <span id=nowdate>服务器时间：<?php echo date("Y-m-d H:i:s") ?></span>
     </h4>
 </div>
@@ -108,7 +107,6 @@ require_once 'config.php';
 <marquee style="background-color: lightblue">
     <?php
         $msg = file_get_contents("admin/msg.txt");
-//        var_dump($msg);
         print($msg);
     ?>
 </marquee>
@@ -152,12 +150,10 @@ require_once 'config.php';
 
     </div>
 </div>
-
-
+<?php require_once "blue-footer.php"?>
 
 <script type="text/javascript">
     var diff = new Date("<?php echo date("Y/m/d H:i:s")?>").getTime() - new Date().getTime();
-    //alert(diff);
     function clock() {
         var x, h, m, s, n, xingqi, y, mon, d;
         var x = new Date(new Date().getTime() + diff);
@@ -170,7 +166,6 @@ require_once 'config.php';
         m = x.getMinutes();
         s = x.getSeconds();
         n = y + "-" + mon + "-" + d + " " + (h >= 10 ? h : "0" + h) + ":" + (m >= 10 ? m : "0" + m) + ":" + (s >= 10 ? s : "0" + s);
-//            alert(n);
         document.getElementById('nowdate').innerHTML = "服务器时间："+n;
         setTimeout("clock()", 1000);
     }
