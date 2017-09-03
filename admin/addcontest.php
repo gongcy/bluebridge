@@ -153,7 +153,7 @@ if (isset($_POST)) {
 
     $mData1['contest_id'] = $ret1;
 
-    $list = trim($_POST['list']);
+    $list = trim($_POST['list'], ' ;');
     $pro_array = explode(";", $list);
     foreach ($pro_array as $key => $value) {
         $mData1['num'] = $key + 1;
