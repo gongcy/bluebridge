@@ -32,7 +32,7 @@ $condition1 = array(
     'judge' => $upConJudge,
     'link' => 'and'
 );
-$list = trim($_POST['list']);
+$list = trim($_POST['list'], ' ;');
 $pro_array = explode(";", $list);
 foreach ($pro_array as $key => $value) {
     $upData1['num'] = $key + 1;
