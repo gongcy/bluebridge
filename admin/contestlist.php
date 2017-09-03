@@ -28,14 +28,57 @@ if (!isset($_SESSION['administrator'])) {
     <link rel="stylesheet" href="../assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="../assets/css/admin.css">
     <script type="text/javascript">
-        function editClick() {
-            o = document.getElementById('name');
-            if (o.childNodes[0].value) {
-                o.innerHTML = o.value;
-            } else {
-                o.innerHTML = "<input type='text' id='temp' value='" + o.innerHTML + "' />";
+        function editClick(contest_id) {
+            var getcodehttp;
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                getcodehttp = new XMLHttpRequest();
             }
-            return false;
+            else {
+                // code for IE6, IE5
+                getcodehttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            getcodehttp.onreadystatechange = function () {
+                if (getcodehttp.readyState == 4 && getcodehttp.status == 200) {
+                    var responseJson = getcodehttp.responseText;
+                    var objData = jQuery.parseJSON(responseJson);
+                    console.log(objData);
+                    $('#contest-title').val(objData.title);
+                    $('#contest-des').val(objData.description);
+                    $('#contest-id').val(contest_id);
+                    $('#contest-st').val(objData.start_time);
+                    $('#contest-et').val(objData.end_time);
+                    $('#contest-pwd').val(objData.password);
+                    $('#problem_list').val(objData.problem_list);
+                    $('#contest-lang').val([objData.lang]);
+                    $('#editbox').modal();
+                    $(function () {
+                        var $prompt = $('#editbox');
+                        var $confirmBtn = $prompt.find('[data-am-modal-confirm]');
+                        var $cancelBtn = $prompt.find('[data-am-modal-cancel]');
+                        $confirmBtn.unbind("click");
+                        $confirmBtn.on('click', function (e) {
+                            // do something
+                            xmlhttp.open("POST", 'editContest.php', true);
+                            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            xmlhttp.send("contest_id=" + contest_id
+                                + "&list=" + encodeURIComponent($("#problem_list").val())
+                                + "&title=" + encodeURIComponent($("#contest-title").val())
+                                + "&des=" + encodeURIComponent($("#contest-des").val())
+                                + "&start_time=" + encodeURIComponent($("#contest-st").val())
+                                + "&end_time=" + encodeURIComponent($("#contest-et").val())
+                                + "&lang=" + $("#contest-lang").val()
+                                + "&pwd=" + encodeURIComponent($("#contest-pwd").val()));
+                            $.AMUI.progress.start();
+                        });
+                    });
+                    $.AMUI.progress.done();
+                }
+            };
+
+            getcodehttp.open("GET", "showContestConfig.php?contest_id="+contest_id, true);
+            getcodehttp.send();
+            $.AMUI.progress.start();
         }
 
         function saveClick() {
@@ -86,8 +129,6 @@ if (!isset($_SESSION['administrator'])) {
                     <div class="am-btn-toolbar">
                         <div class="am-btn-group am-btn-group-xs">
                             <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
-                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
-                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 审核</button>
                             <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
                         </div>
                     </div>
@@ -121,6 +162,7 @@ if (!isset($_SESSION['administrator'])) {
                                 $db = new DB();
                                 $mTable = $db->fetchAll("select * from contest_blue");
                                 foreach ($mTable as $key=>$value){
+                                    $contest_id = $value['contest_id'];
                                     ?>
                                     <tr>
                                         <td><input type="checkbox" /></td>
@@ -133,18 +175,19 @@ if (!isset($_SESSION['administrator'])) {
                                         <td>
                                             <div class="am-btn-toolbar">
                                                 <div class="am-btn-group am-btn-group-xs">
-                                                    <button onclick="editClick()"
-                                                            class="am-btn am-btn-default am-btn-xs am-text-secondary">
-                                                        <span class="am-icon-pencil-square-o"></span> Edit
-                                                    </button>
-                                                    <button onclick="saveClick()"
-                                                            class="am-btn am-btn-default am-btn-xs am-hide-sm-only">
-                                                        <span class="am-icon-save"></span> Save
-                                                    </button>
-                                                    <button onclick="deleteClick()"
-                                                            class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                                        <span class="am-icon-trash-o"></span> Delete
-                                                    </button>
+                                                    <?php
+                                                    print("<button type='button' onclick='editClick($contest_id)' id='btn$contest_id'
+                                                            class=\"am-btn am-btn-default am-btn-xs am-text-secondary\">
+                                                        <span class=\"am-icon-pencil-square-o\"></span> Edit
+                                                    </button>");
+                                                    print("<button type='button' onclick='deleteClick($contest_id)' id='btn$contest_id'
+                                                            class=\"am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only\">
+                                                        <span class=\"am-icon-trash-o\"></span> Delete
+                                                    </button>");
+
+                                                    ?>
+
+
                                                 </div>
                                             </div>
                                         </td>
@@ -159,8 +202,6 @@ if (!isset($_SESSION['administrator'])) {
                                 <?php print sizeof($mTable); ?>
                                 场比赛。
                             </div>
-                            </tbody>
-                            </table>
                         </form>
                     </div>
 
@@ -184,6 +225,94 @@ if(isset($_POST)) {
 }
 ?>
 
+<div class="am-modal am-modal-prompt" tabindex="-1" id="editbox">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">修改比赛</div>
+        <div class="am-modal-bd">
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
+                </div>
+
+                <form class="am-form am-form-horizontal" method="post" role="form">
+                    <div class="am-form-group">
+                        <label for="contest-id" class="am-u-sm-3 am-form-label">比赛编号</label>
+                        <div class="am-u-sm-9">
+                            <input id="contest-id" type="text" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="contest-title" class="am-u-sm-3 am-form-label">标题</label>
+                        <div class="am-u-sm-9">
+                            <input name="title" type="text" id="contest-title" placeholder="标题">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="contest-des" class="am-u-sm-3 am-form-label">描述</label>
+                        <div class="am-u-sm-9">
+                            <textarea name="des" class="" rows="5" id="contest-des" placeholder="描述"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="contest-st" class="am-u-sm-3 am-form-label">开始时间</label>
+                        <div class="am-u-sm-9">
+                            <div class="am-form-group am-form-icon">
+                                <i class="am-icon-calendar"></i>
+                                <input name="start_time" id="contest-st" type="datetime-local" class="am-form-field am-input-sm"
+                                       placeholder="开始时间">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="contest-et" class="am-u-sm-3 am-form-label">结束时间</label>
+                        <div class="am-u-sm-9">
+                            <div class="am-form-group am-form-icon">
+                                <i class="am-icon-calendar"></i>
+                                <input name="end_time" id="contest-et" type="datetime-local" class="am-form-field am-input-sm"
+                                       placeholder="结束时间">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="contest-lang" class="am-u-sm-3 am-form-label">比赛语言</label>
+                        <div class="am-u-sm-9">
+                            <label class="am-radio-inline">
+                                <input type="radio" id="contest-lang" name="lang" value="0" data-am-ucheck> C/C++
+                            </label>
+                            <label class="am-radio-inline">
+                                <input type="radio" id="contest-lang" name="lang" value="1" data-am-ucheck> Java
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="contest-pwd" class="am-u-sm-3 am-form-label">密码</label>
+                        <div class="am-u-sm-9">
+                            <input name="pwd" id="contest-pwd" type="text" class="" placeholder="密码(可不填)"/>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="problem_list" class="am-u-sm-3 am-form-label">题目列表</label>
+                        <div class="am-u-sm-9">
+                                <textarea name="list" class="" rows="5" id="problem_list"
+                                          placeholder="题目类型，题目编号，分值；题目类型，题目编号，分值；..."></textarea>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+            <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+        </div>
+    </div>
+</div>
 
 <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu"
    data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
