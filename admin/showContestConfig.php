@@ -14,6 +14,10 @@ $data['contest_id'] = $contest_id;
 $judge['contest_id'] = '=';
 list($conSql, $mapConData)  = $db->FDFields($data, 'and', $judge);
 $contest_base_info = $db->fetch('select * from contest_blue where'.$conSql, $mapConData);
+$start_time = explode(' ', $contest_base_info['start_time']);
+$contest_base_info['start_time'] = $start_time[0]."T".$start_time[1];
+$end_time = explode(' ', $contest_base_info['end_time']);
+$contest_base_info['end_time'] = $end_time[0]."T".$end_time[1];
 $mData1 = $db->fetchAll('select * from contest_blue_problem where contest_id='.$contest_id);
 $problem_list = "";
 foreach ($mData1 as $value) {
