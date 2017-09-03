@@ -154,7 +154,6 @@ if (isset($_POST)) {
     $mData1['contest_id'] = $ret1;
 
     $list = trim($_POST['list']);
-    var_dump($list);
     $pro_array = explode(";", $list);
     foreach ($pro_array as $key => $value) {
         $mData1['num'] = $key + 1;
