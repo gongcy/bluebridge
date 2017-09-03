@@ -98,7 +98,6 @@ class DB
     {
         if ($sql) {
             $sql .= ' limit ' . (int)$limit[0] . ',' . (intval($limit[1]) > 0 ? intval($limit[1]) : 10);
-            //echo "$sql";
             $pdoStatement = $this->pdo->prepare($sql, $preType);
             $pdoStatement->execute($searchData);
             return $data = $pdoStatement->fetchAll($dataMode);
@@ -130,7 +129,6 @@ class DB
             $mapData = array_merge($mapData, $mapSetData);
             list($where, $mapData) = $this->FDCondition($condition, $mapData);
             $sql .= $where ? ' WHERE ' . $where : '';
-            //echo "$sql";
             $pdoStatement = $this->pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             $execRet = $pdoStatement->execute($mapData);
             return $execRet ? ($returnRowCount ? $pdoStatement->rowCount() : $execRet) : false;
