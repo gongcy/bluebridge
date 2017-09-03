@@ -68,9 +68,6 @@ require_once 'config.php';
         gethttp.onreadystatechange = function () {
             if (gethttp.readyState == 4 && gethttp.status == 200) {
                 var res = gethttp.responseText;
-//                console.log(res);
-//                $(thix).html(res);
-//                $(thix).html(res === "AC");
                 if (res == "panding") {
                     $(thix).html("<i class='am-icon-spinner am-icon-spin'></i>判题中");
                     $(thix).attr("class", "am-btn am-btn-warning");
