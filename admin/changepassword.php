@@ -43,7 +43,7 @@ if(isset($_POST['do'])) {
 
     $upConData['user_id'] = $_POST['id'];
     $upConJudge['user_id'] = '=';
-    list($upConStr, $mapUpConData) = $DB->FDField('password', 200, '=');
+    list($upConStr, $mapUpConData) = $db->FDField('password', 200, '=');
     $condition = array(
         'str' => $upConStr,
         'data' => $upConData,
@@ -51,10 +51,10 @@ if(isset($_POST['do'])) {
         'link' => 'and'
     );
     $upData['password'] = pwGen($_POST['pwd']);
-    $changeRows = $DB->update('users', $upData, $condition, $mapUpConData);
+    $changeRows = $db->update('users', $upData, $condition, $mapUpConData);
     echo '更新行数:' . (int) $changeRows . '<br/>';
 
-    if ($flag){
+    if ($changeRows === 1){
         print ("<script>alert('修改成功');</script>");
     }
     else {
