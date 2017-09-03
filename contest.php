@@ -344,7 +344,6 @@ if (isset($_GET['cid'])) {
 <?php require_once "blue-footer.php"?>
 <script type="text/javascript">
     var diff = new Date("<?php echo date("Y/m/d H:i:s")?>").getTime() - new Date().getTime();
-    //alert(diff);
     function clock() {
         var x, h, m, s, n, xingqi, y, mon, d;
         var x = new Date(new Date().getTime() + diff);
@@ -357,7 +356,6 @@ if (isset($_GET['cid'])) {
         m = x.getMinutes();
         s = x.getSeconds();
         n = y + "-" + mon + "-" + d + " " + (h >= 10 ? h : "0" + h) + ":" + (m >= 10 ? m : "0" + m) + ":" + (s >= 10 ? s : "0" + s);
-//            alert(n);
         document.getElementById('nowdate').innerHTML = "服务器时间："+n;
         setTimeout("clock()", 1000);
     }
