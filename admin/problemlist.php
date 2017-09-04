@@ -28,20 +28,51 @@ if (!isset($_SESSION['administrator'])) {
     <link rel="stylesheet" href="../assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="../assets/css/admin.css">
     <script type="text/javascript">
-        function editClick() {
-            o = document.getElementById('name');
-            if (o.childNodes[0].value) {
-                o.innerHTML = o.value;
-            } else {
-                o.innerHTML = "<input type='text' id='temp' value='" + o.innerHTML + "' />";
+        function editClick(problem_id) {
+            var getcodehttp;
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                getcodehttp = new XMLHttpRequest();
             }
-            return false;
-        }
+            else {
+                // code for IE6, IE5
+                getcodehttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            getcodehttp.onreadystatechange = function () {
+                if (getcodehttp.readyState == 4 && getcodehttp.status == 200) {
+                    var responseJson = getcodehttp.responseText;
+                    var objData = jQuery.parseJSON(responseJson);
+                    console.log(objData);
+                    $('#problem-title').val(objData.title);
+                    $('#problem-des').val(objData.description);
+                    $('#problem-id').val(problem_id);
+                    $('#problem-ans').val(objData.solution);
+                    $('#problem-hint').val(objData.hint);
+                    $('#editbox').modal();
+                    $(function () {
+                        var $prompt = $('#editbox');
+                        var $confirmBtn = $prompt.find('[data-am-modal-confirm]');
+                        var $cancelBtn = $prompt.find('[data-am-modal-cancel]');
+                        $confirmBtn.unbind("click");
+                        $confirmBtn.on('click', function (e) {
+                            // do something
+                            getcodehttp.open("POST", 'editFillBlankProblem.php', true);
+                            getcodehttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            getcodehttp.send("problem_id=" + problem_id
+                                + "&title=" + encodeURIComponent($("#problem-title").val())
+                                + "&des=" + encodeURIComponent($("#problem-des").val())
+                                + "&ans=" + encodeURIComponent($("#problem-ans").val())
+                                + "&hint=" + encodeURIComponent($("#problem-hint").val()));
+                            $.AMUI.progress.start();
+                        });
+                    });
+                    $.AMUI.progress.done();
+                }
+            };
 
-        function saveClick() {
-            document.getElementById('name').innerHTML = document
-                .getElementById('demo').value;
-            return false;
+            getcodehttp.open("GET", "showFillBlankProblemInfo.php?problem_id="+problem_id, true);
+            getcodehttp.send();
+            $.AMUI.progress.start();
         }
 
         function deleteClick() {
@@ -50,7 +81,6 @@ if (!isset($_SESSION['administrator'])) {
         function getResult() {
             $.AMUI.progress.start();
             method = $('#smethod option:selected').val();
-            //                alert(method);
             condition = $('#txtCondition').val();
             $("#resultdiv").load(
                 "search_stu.jsp?method=" + method + "&condition=" + condition);
@@ -85,8 +115,6 @@ if (!isset($_SESSION['administrator'])) {
                     <div class="am-btn-toolbar">
                         <div class="am-btn-group am-btn-group-xs">
                             <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
-                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存</button>
-                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 审核</button>
                             <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除</button>
                         </div>
                     </div>
@@ -117,6 +145,7 @@ if (!isset($_SESSION['administrator'])) {
                                     $db = new DB();
                                     $mTable = $db->fetchAll("select * from problem_fillblank");
                                     foreach ($mTable as $key=>$value){
+                                        $problem_id = $value['problem_id'];
                                 ?>
                                     <tr>
                                         <td><input type="checkbox" /></td>
@@ -127,18 +156,17 @@ if (!isset($_SESSION['administrator'])) {
                                         <td>
                                             <div class="am-btn-toolbar">
                                                 <div class="am-btn-group am-btn-group-xs">
-                                                    <button onclick="editClick()"
-                                                            class="am-btn am-btn-default am-btn-xs am-text-secondary">
-                                                        <span class="am-icon-pencil-square-o"></span> Edit
-                                                    </button>
-                                                    <button onclick="saveClick()"
-                                                            class="am-btn am-btn-default am-btn-xs am-hide-sm-only">
-                                                        <span class="am-icon-save"></span> Save
-                                                    </button>
-                                                    <button onclick="deleteClick()"
-                                                            class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                                        <span class="am-icon-trash-o"></span> Delete
-                                                    </button>
+                                                    <?php
+                                                    print("<button type='button' onclick='editClick($problem_id)' id='btn$problem_id'
+                                                            class=\"am-btn am-btn-default am-btn-xs am-text-secondary\">
+                                                        <span class=\"am-icon-pencil-square-o\"></span> Edit
+                                                    </button>");
+                                                    print("<button type='button' onclick='deleteClick($problem_id)' id='btn$problem_id'
+                                                            class=\"am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only\">
+                                                        <span class=\"am-icon-trash-o\"></span> Delete
+                                                    </button>");
+
+                                                    ?>
                                                 </div>
                                             </div>
                                         </td>
@@ -177,6 +205,60 @@ if(isset($_POST)) {
     }
 }
 ?>
+
+<div class="am-modal am-modal-prompt" tabindex="-1" id="editbox">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">修改比赛</div>
+        <div class="am-modal-bd">
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
+                </div>
+
+                <form class="am-form am-form-horizontal" method="post" role="form">
+                    <div class="am-form-group">
+                        <label for="problem-id" class="am-u-sm-3 am-form-label">题目编号</label>
+                        <div class="am-u-sm-9">
+                            <input id="problem-id" type="text" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="problem-title" class="am-u-sm-3 am-form-label">标题</label>
+                        <div class="am-u-sm-9">
+                            <input name="title" type="text" id="problem-title" placeholder="标题">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="problem-des" class="am-u-sm-3 am-form-label">描述</label>
+                        <div class="am-u-sm-9">
+                            <textarea name="des" class="" rows="5" id="problem-des" placeholder="描述"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="problem-ans" class="am-u-sm-3 am-form-label">答案</label>
+                        <div class="am-u-sm-9">
+                            <input name="ans" type="text" id="problem-ans" placeholder="正确答案">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="problem-hint" class="am-u-sm-3 am-form-label">提示</label>
+                        <div class="am-u-sm-9">
+                            <textarea name="hint" class="" rows="5" id="problem-hint" placeholder="提示"></textarea>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+            <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+        </div>
+    </div>
+</div>
 
 
 <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu"

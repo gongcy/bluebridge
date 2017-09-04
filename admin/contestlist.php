@@ -81,12 +81,6 @@ if (!isset($_SESSION['administrator'])) {
             $.AMUI.progress.start();
         }
 
-        function saveClick() {
-            document.getElementById('name').innerHTML = document
-                .getElementById('demo').value;
-            return false;
-        }
-
         function deleteClick() {
 
         }
