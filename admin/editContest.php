@@ -24,7 +24,6 @@ $upData['lang'] = $_POST['lang'];
 $upData['password'] = $_POST['pwd'];
 $changeRows = $db->update('contest_blue', $upData, $condition);
 
-$upData1['contest_id'] = $_POST['contest_id'];
 $upConData['contest_id'] = $_POST['contest_id'];
 $upConJudge['contest_id'] = '=';
 $condition1 = array(
@@ -32,15 +31,22 @@ $condition1 = array(
     'judge' => $upConJudge,
     'link' => 'and'
 );
+
+// remove old problem map
+list($delCon, $mapDelCon) = $db->FDField('contest_id', $_POST['contest_id']);
+$delRet = $db->delete('contest_blue_problem', $delCon, $mapDelCon);
+
+// insert new problem map
 $list = trim($_POST['list'], ' ;');
 $pro_array = explode(";", $list);
 foreach ($pro_array as $key => $value) {
-    $upData1['num'] = $key + 1;
+    $inData['contest_id'] = $_POST['contest_id'];
+    $inData['num'] = $key + 1;
     $per_attr = explode(",", $value);
-    $upData1['type'] = $per_attr[0];
-    $upData1['problem_id'] = $per_attr[1];
-    $upData1['score'] = $per_attr[2];
-    $ret2 = $db->update("contest_blue_problem", $upData1, $condition1);
+    $inData['type'] = $per_attr[0];
+    $inData['problem_id'] = $per_attr[1];
+    $inData['score'] = $per_attr[2];
+    $ret2 = $db->insert("contest_blue_problem", $inData,true);
 }
 
 echo '更新行数:' . (int) $changeRows . '<br/>';
