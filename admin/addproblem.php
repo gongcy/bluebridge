@@ -60,7 +60,6 @@ if (!isset($_SESSION['administrator'])) {
                             <label for="problem-id" class="am-u-sm-3 am-form-label">题目编号</label>
                             <div class="am-u-sm-9">
                                 自动生成
-<!--                                <input name="id" type="text" id="problem-id" value="自动生成" readonly>-->
                             </div>
                         </div>
 
