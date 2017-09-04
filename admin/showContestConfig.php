@@ -21,7 +21,7 @@ $contest_base_info['end_time'] = $end_time[0]."T".$end_time[1];
 $mData1 = $db->fetchAll('select * from contest_blue_problem where contest_id='.$contest_id);
 $problem_list = "";
 foreach ($mData1 as $value) {
-    $problem_list .= $value['type'].','.$value['num'].','.$value['score'].';';
+    $problem_list .= $value['type'].','.$value['problem_id'].','.$value['score'].';';
 }
 $problem_list = trim($problem_list, ' ;');
 $problem_list = array('problem_list' => $problem_list);
