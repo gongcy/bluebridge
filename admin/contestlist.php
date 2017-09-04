@@ -59,9 +59,9 @@ if (!isset($_SESSION['administrator'])) {
                         $confirmBtn.unbind("click");
                         $confirmBtn.on('click', function (e) {
                             // do something
-                            xmlhttp.open("POST", 'editContest.php', true);
-                            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                            xmlhttp.send("contest_id=" + contest_id
+                            getcodehttp.open("POST", 'editContest.php', true);
+                            getcodehttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            getcodehttp.send("contest_id=" + contest_id
                                 + "&list=" + encodeURIComponent($("#problem_list").val())
                                 + "&title=" + encodeURIComponent($("#contest-title").val())
                                 + "&des=" + encodeURIComponent($("#contest-des").val())
