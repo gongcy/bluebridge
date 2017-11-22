@@ -50,7 +50,7 @@ if (!isset($_SESSION['administrator'])) {
                     $('#contest-et').val(objData.end_time);
                     $('#contest-pwd').val(objData.password);
                     $('#problem_list').val(objData.problem_list);
-                    $('#contest-lang').val([objData.lang]);
+                    $("input:radio[value='"+objData.lang+"']").attr('checked','true');
                     $('#editbox').modal();
                     $(function () {
                         var $prompt = $('#editbox');
@@ -275,10 +275,10 @@ if(isset($_POST)) {
                         <label for="contest-lang" class="am-u-sm-3 am-form-label">比赛语言</label>
                         <div class="am-u-sm-9">
                             <label class="am-radio-inline">
-                                <input type="radio" id="contest-lang" name="lang" value="0" data-am-ucheck> C/C++
+                                <input type="radio" id="contest-lang" name="lang" value=0 data-am-ucheck> C/C++
                             </label>
                             <label class="am-radio-inline">
-                                <input type="radio" id="contest-lang" name="lang" value="1" data-am-ucheck> Java
+                                <input type="radio" id="contest-lang" name="lang" value=1 data-am-ucheck> Java
                             </label>
                         </div>
                     </div>
