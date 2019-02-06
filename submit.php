@@ -7,13 +7,13 @@ if ($_POST) {
     //usleep(rand(5000,2000000));
     $cid = $_POST['cid'];
     $db = new DB();
-    $rs = $db->fetch("select * from contest_blue where contest_id=".$cid);
+    $rs = $db->fetch("select * from contest_blue where contest_id=" . $cid);
     $BEGIN_TIME = $rs['start_time'];
     $END_TIME = $rs['end_time'];
     $lang = $rs['lang'];
-    if ((strtotime($BEGIN_TIME) < $current_time && $current_time < strtotime($END_TIME))||isset($_SESSION['administrator'])) {
+    if ((strtotime($BEGIN_TIME) < $current_time && $current_time < strtotime($END_TIME)) || isset($_SESSION['administrator'])) {
         $contest_pid = $_POST['contest_pid'];
-        $rs1 = $db->fetch("select * from contest_blue_problem where num=".$contest_pid." and contest_id=".$cid);
+        $rs1 = $db->fetch("select * from contest_blue_problem where num=" . $contest_pid . " and contest_id=" . $cid);
         if ($rs1['type'] == 0) {
             // result fillblank
             $inData['contest_code'] = $cid;
@@ -30,7 +30,7 @@ if ($_POST) {
             // code fillblank
             $pid = $rs1['problem_id'];
 
-            ($lang==0) ? ($replace=$pid.".cpp") : ($replace=$pid.".java");
+            ($lang == 0) ? ($replace = $pid . ".cpp") : ($replace = $pid . ".java");
             $ansfile = fopen('fillblank/' . $replace, 'r') or dir("error:3");
             $ansfileread = fread($ansfile, filesize('fillblank/' . $replace));
             $keyword_list = trim($_POST['ans']);
@@ -44,7 +44,7 @@ if ($_POST) {
             $inData['user_id'] = $_SESSION['user_id'];
             $inData['in_date'] = date('Y-m-d H:i:s', time());
             $inData['result'] = '0';
-            ($lang==0) ? ($inData['language'] = '1') : ($inData['language'] = '3');
+            ($lang == 0) ? ($inData['language'] = '1') : ($inData['language'] = '3');
             $inData['ip'] = $_SERVER["REMOTE_ADDR"];
             $inData['code_length'] = strlen($ans);
             $ret = $db->insert('solution', $inData, true);
@@ -69,14 +69,14 @@ if ($_POST) {
 
             if ($ret && $ret1 && $ret2) echo "ok:$ret2";
             else echo "error:5";
-        } else if ($rs1['type'] == 2){
+        } else if ($rs1['type'] == 2) {
             // programming
             $inData['problem_id'] = $rs1['problem_id'];
             $inData['user_id'] = $_SESSION['user_id'];
             $inData['in_date'] = date('Y-m-d H:i:s', time());
             $inData['result'] = '0';
 
-            ($lang==0) ? ($inData['language'] = '1') : ($inData['language'] = '3');
+            ($lang == 0) ? ($inData['language'] = '1') : ($inData['language'] = '3');
             $inData['ip'] = $_SERVER["REMOTE_ADDR"];
             $inData['code_length'] = strlen($_POST['ans']);
             $ret = $db->insert('solution', $inData, true);
