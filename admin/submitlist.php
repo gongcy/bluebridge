@@ -117,7 +117,7 @@ if (!isset($_SESSION['administrator'])) {
                                 <?php
                                 require_once "../DBCN.php";
                                 $db = new DB();
-                                $mTable = $db->fetchAll("select * from blueSySSubmit");
+                                $mTable = $db->fetchAll("select * from solution_blue");
                                 foreach ($mTable as $key=>$value){
                                     ?>
                                     <tr>

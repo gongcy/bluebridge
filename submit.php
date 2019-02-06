@@ -23,7 +23,7 @@ if ($_POST) {
             $inData['type'] = 0;
             $inData['ip'] = $_SERVER['REMOTE_ADDR'];
             $inData['submit_time'] = date('Y-m-d H:i:s', time());
-            $ret = $db->insert('blueSySSubmit', $inData, true);
+            $ret = $db->insert('solution_blue', $inData, true);
             if ($ret) echo "ok:$ret";
             else echo "error:1";
         } else if ($rs1['type'] == 1) {
@@ -39,7 +39,7 @@ if ($_POST) {
                 $ansfileread = str_replace(($key + 1) . "_______", $value, $ansfileread);
             }
             $ans = $ansfileread;
-            
+
             $inData['problem_id'] = $rs1['problem_id'];
             $inData['user_id'] = $_SESSION['user_id'];
             $inData['in_date'] = date('Y-m-d H:i:s', time());
@@ -64,7 +64,7 @@ if ($_POST) {
             $inData2['type'] = 1;
             $inData2['ans'] = $_POST['ans'];
             $inData2['ip'] = $_SERVER['REMOTE_ADDR'];
-            $ret2 = $db->insert('blueSySSubmit', $inData2, true);
+            $ret2 = $db->insert('solution_blue', $inData2, true);
             //echo 'bl插入' . ($ret2 ? '成功' : '失败') . '<br/>';
 
             if ($ret && $ret1 && $ret2) echo "ok:$ret2";
@@ -96,7 +96,7 @@ if ($_POST) {
             $inData2['type'] = 2;
             $inData2['ip'] = $_SERVER['REMOTE_ADDR'];
 //            $inData2['ans'] = $_POST['ans'];
-            $ret2 = $db->insert('blueSySSubmit', $inData2, true);
+            $ret2 = $db->insert('solution_blue', $inData2, true);
 //            echo '插入' . ($ret2 ? '成功' : '失败') . '<br/>';
 
             if ($ret && $ret1 && $ret2) echo "ok:$ret2";

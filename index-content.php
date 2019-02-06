@@ -48,7 +48,7 @@
                     print("<tr><td>$key.$des</td>");
                     $data['pid'] = $key;
                     list($conSql, $mapConData) = $db->FDFields($data, 'and', $judge);
-                    $mData = $db->fetch('select * from blueSySSubmit where ' . $conSql . ' order by `submit_id` desc', $mapConData);
+                    $mData = $db->fetch('select * from solution_blue where ' . $conSql . ' order by `submit_id` desc', $mapConData);
                     if ($mData && isset($mData['submit_id']) && $mData['submit_id'] != '') {
                         $submitid = $mData['submit_id'];
                         $js = "getans('#btn" . $key . "',$submitid)";

@@ -4,7 +4,7 @@
  * @date: 16-10-31 下午8:17
  */
 
-CREATE TABLE `blueSySSubmit` (
+CREATE TABLE solution_blue (
   `submit_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '蓝桥模式提交自增id',
   `user_id` varchar(48) NOT NULL DEFAULT '' COMMENT '比赛代码',
   `contest_code` varchar(40) NOT NULL DEFAULT '' COMMENT '比赛代码',

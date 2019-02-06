@@ -10,7 +10,7 @@ if (isset($_GET['cid']) && isset($_GET['method'])) {
     $data1['contest_code'] = $cid;
     $judge1['contest_code'] = '=';
     list($conSql1, $mapConData1) = $db->FDFields($data1, 'and', $judge1);
-    $mData1 = $db->fetchALL('select * from blueSySSubmit where ' . $conSql1 . 'and score is null order by submit_id asc', $mapConData1, array(0, 5000));
+    $mData1 = $db->fetchALL('select * from solution_blue where ' . $conSql1 . 'and score is null order by submit_id asc', $mapConData1, array(0, 5000));
 
     foreach ($mData1 as $key => $value) {
         updateans($value['submit_id'], $cid);
@@ -20,7 +20,7 @@ if (isset($_GET['cid']) && isset($_GET['method'])) {
     $judge['contest_code'] = '=';
 
     list($conSql, $mapConData) = $db->FDFields($data, 'and', $judge);
-    $mData = $db->fetchALL('select b.*,a.* from blueSySSubmit as a join users as b on a.user_id=b.user_id where a.' . $conSql . 'and a.score is not null order by a.submit_id asc', $mapConData, array(0, 5000));
+    $mData = $db->fetchALL('select b.*,a.* from solution_blue as a join users as b on a.user_id=b.user_id where a.' . $conSql . 'and a.score is not null order by a.submit_id asc', $mapConData, array(0, 5000));
 
     if ($mData) {
         $table = array();

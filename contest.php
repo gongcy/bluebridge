@@ -295,7 +295,7 @@ if (isset($_GET['cid'])) {
                     $data['pid'] = $contest_pid;
                     $judge['pid'] = '=';
                     list($conSql, $mapConData) = $db->FDFields($data, 'and', $judge);
-                    $mData = $db->fetch('select * from blueSySSubmit where ' . $conSql . ' order by `submit_id` desc', $mapConData);
+                    $mData = $db->fetch('select * from solution_blue where ' . $conSql . ' order by `submit_id` desc', $mapConData);
                     if ($mData && isset($mData['submit_id']) && $mData['submit_id'] != '') {
                         $submitid = $mData['submit_id'];
                         $js = "getans('#btn$contest_pid', $submitid, $cid)";

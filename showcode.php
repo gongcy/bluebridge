@@ -26,7 +26,7 @@ if ($_GET) {
     $data['contest_code'] = $_GET['cid'];
     $judge['contest_code'] = '=';
     list($conSql, $mapConData) = $db->FDFields($data, 'and', $judge);
-    $mData = $db->fetch('select * from blueSySSubmit where ' . $conSql . ' order by `submit_id` desc', $mapConData);
+    $mData = $db->fetch('select * from solution_blue where ' . $conSql . ' order by `submit_id` desc', $mapConData);
     if ($mData['ans'] != NULL) {
         print($mData['ans']);
     } else {
