@@ -41,11 +41,11 @@ require_once 'config.php';
     </style>
     <script>
         var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?c6913a16d3550e551dc3c0869c510963";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?c6913a16d3550e551dc3c0869c510963";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
         })();
     </script>
 </head>
@@ -67,7 +67,7 @@ require_once 'config.php';
 
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
             data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
-            class="am-icon-bars"></span></button>
+                class="am-icon-bars"></span></button>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 
@@ -76,7 +76,7 @@ require_once 'config.php';
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
                     <span class="am-icon-users"></span> <?php print($_SESSION['user_id']); ?> <span
-                        class="am-icon-caret-down"></span>
+                            class="am-icon-caret-down"></span>
                 </a>
                 <ul class="am-dropdown-content">
                     <!--                     <li><a href="#"><span class="am-icon-user"></span> 资料</a></li>-->
@@ -90,7 +90,7 @@ require_once 'config.php';
                 </ul>
             </li>
             <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span
-                        class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+                            class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
         </ul>
     </div>
 </header>
@@ -99,25 +99,25 @@ require_once 'config.php';
 </div>
 <div class="am-g">
     <h4 style="text-align:center; margin:0; color:red;">
-        <?php require_once 'config.php';?>
+        <?php require_once 'config.php'; ?>
         <span id=nowdate>服务器时间：<?php echo date("Y-m-d H:i:s") ?></span>
     </h4>
 </div>
 <hr/>
 <marquee style="background-color: lightblue">
     <?php
-        $msg = file_get_contents("admin/msg.txt");
-        print($msg);
+    $msg = file_get_contents("admin/msg.txt");
+    print($msg);
     ?>
 </marquee>
 <div class="am-g">
     <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
         <table class="am-table am-table-bd am-table-striped admin-content-table">
             <thead>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Language</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Language</th>
             </thead>
             <tbody>
             <?php
@@ -126,23 +126,23 @@ require_once 'config.php';
             $db = new DB();
 
             $rs = $db->fetchAll('select * from contest_blue');
-            foreach ($rs as $key=>$value) {
+            foreach ($rs as $key => $value) {
                 print("<tr>");
-                print("<td>".$value['contest_id']."</td>");
-                print("<td><a href=contest.php?cid=".$value['contest_id'].">".$value['title']."</a></td>");
+                print("<td>" . $value['contest_id'] . "</td>");
+                print("<td><a href=contest.php?cid=" . $value['contest_id'] . ">" . $value['title'] . "</a></td>");
                 print("<td>");
                 $now = time();
                 $start_time = strtotime($value['start_time']);
                 $end_time = strtotime($value['end_time']);
                 if ($now > $end_time)
-                    print "<span style='color: black'>已结束</span>@".$value['start_time'];
+                    print "<span style='color: black'>已结束</span>@" . $value['start_time'];
                 else if ($now < $start_time)
-                    print "<span style='color: red'>未开始</span>@".$value['start_time'];
-            else
-            print "<span style='color: green'>进行中</span>@".$value['start_time'];
-            print("</td>");
-            print("<td>".(($value['lang']==1) ? "Java" : "C/C++")."</td>");
-            print("</tr>");
+                    print "<span style='color: red'>未开始</span>@" . $value['start_time'];
+                else
+                    print "<span style='color: green'>进行中</span>@" . $value['start_time'];
+                print("</td>");
+                print("<td>" . (($value['lang'] == 1) ? "Java" : "C/C++") . "</td>");
+                print("</tr>");
             }
             ?>
             </tbody>
@@ -150,10 +150,11 @@ require_once 'config.php';
 
     </div>
 </div>
-<?php require_once "blue-footer.php"?>
+<?php require_once "blue-footer.php" ?>
 
 <script type="text/javascript">
     var diff = new Date("<?php echo date("Y/m/d H:i:s")?>").getTime() - new Date().getTime();
+
     function clock() {
         var x, h, m, s, n, xingqi, y, mon, d;
         var x = new Date(new Date().getTime() + diff);
@@ -166,9 +167,10 @@ require_once 'config.php';
         m = x.getMinutes();
         s = x.getSeconds();
         n = y + "-" + mon + "-" + d + " " + (h >= 10 ? h : "0" + h) + ":" + (m >= 10 ? m : "0" + m) + ":" + (s >= 10 ? s : "0" + s);
-        document.getElementById('nowdate').innerHTML = "服务器时间："+n;
+        document.getElementById('nowdate').innerHTML = "服务器时间：" + n;
         setTimeout("clock()", 1000);
     }
+
     clock();
 </script>
 
