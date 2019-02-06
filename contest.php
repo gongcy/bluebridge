@@ -57,8 +57,7 @@ require_once 'config.php';
         if (window.XMLHttpRequest) {
             // code for IE7+, Firefox, Chrome, Opera, Safari
             gethttp = new XMLHttpRequest();
-        }
-        else {
+        } else {
             // code for IE6, IE5
             gethttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
@@ -98,7 +97,7 @@ require_once 'config.php';
                     $(thix).removeAttr("disabled");
                 } else if (res.substring(0, 3) == 'TLE') {
                     msg = '时间超限';
-                    if (res.substring(5) == '' || res.substring(5) == '00');
+                    if (res.substring(5) == '' || res.substring(5) == '00') ;
                     else if (res.substring(5) != '##') {
                         msg += "," + res.substring(5) + "%正确";
                         $(thix).html("<i>" + msg + "</i>");
@@ -114,7 +113,7 @@ require_once 'config.php';
                     }
                 } else if (res.substring(0, 3) == 'MLE') {
                     msg = '内存超限';
-                    if (res.substring(5) == '' || res.substring(5) == '00');
+                    if (res.substring(5) == '' || res.substring(5) == '00') ;
                     else msg += "," + res.substring(5) + "%正确";
                     $(thix).html("<i>" + msg + "</i>");
                     $(thix).attr("class", "am-btn am-btn-danger");
@@ -128,13 +127,13 @@ require_once 'config.php';
             }
         }
     }
+
     function showSubmit(thix, contest_pid, cid) {
         var getcodehttp;
         if (window.XMLHttpRequest) {
             // code for IE7+, Firefox, Chrome, Opera, Safari
             getcodehttp = new XMLHttpRequest();
-        }
-        else {
+        } else {
             // code for IE6, IE5
             getcodehttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
@@ -145,8 +144,7 @@ require_once 'config.php';
                 if (window.XMLHttpRequest) {
                     // code for IE7+, Firefox, Chrome, Opera, Safari
                     xmlhttp = new XMLHttpRequest();
-                }
-                else {
+                } else {
                     // code for IE6, IE5
                     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                 }
@@ -157,8 +155,7 @@ require_once 'config.php';
                             $(thix).attr("disabled", "disabled");
                             $(thix).html(xmlhttp.responseText);
                             $.AMUI.progress.done();
-                        }
-                        else {
+                        } else {
                             $(thix).html("<i class='am-icon-spinner am-icon-spin'></i> 提交成功");
                             $(thix).attr("class", "am-btn am-btn-warning");
                             $(thix).attr("disabled", "disabled");
@@ -191,7 +188,7 @@ require_once 'config.php';
                 $.AMUI.progress.done();
             }
         }
-        getcodehttp.open("GET", "showcode.php?cid="+cid+"&pid=" + contest_pid, true);
+        getcodehttp.open("GET", "showcode.php?cid=" + cid + "&pid=" + contest_pid, true);
         getcodehttp.send();
         $.AMUI.progress.start();
     }
@@ -205,7 +202,7 @@ require_once 'config.php';
 
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
             data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
-            class="am-icon-bars"></span></button>
+                class="am-icon-bars"></span></button>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 
@@ -214,7 +211,7 @@ require_once 'config.php';
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
                     <span class="am-icon-users"></span> <?php print($_SESSION['nick']); ?> <span
-                        class="am-icon-caret-down"></span>
+                            class="am-icon-caret-down"></span>
                 </a>
                 <ul class="am-dropdown-content">
                     <!--                     <li><a href="#"><span class="am-icon-user"></span> 资料</a></li>-->
@@ -228,7 +225,7 @@ require_once 'config.php';
                 </ul>
             </li>
             <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span
-                        class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+                            class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
         </ul>
     </div>
 </header>
@@ -239,17 +236,17 @@ if (isset($_GET['cid'])) {
     require_once "DBCN.php";
     $db = new DB();
 
-    $rs0 = $db->fetch("select * from contest_blue where contest_id=".$cid);
+    $rs0 = $db->fetch("select * from contest_blue where contest_id=" . $cid);
     ?>
     <div class="am-g">
-        <h1 style="text-align:center; margin:0;"><?php print $rs0['title']." ".(($rs0['lang']==0)?"C/C++":"Java")?></h1>
+        <h1 style="text-align:center; margin:0;"><?php print $rs0['title'] . " " . (($rs0['lang'] == 0) ? "C/C++" : "Java") ?></h1>
     </div>
     <div class="am-g">
         <h4 style="text-align:center; margin:0; color:red;">
             <?php
             $BEGIN_TIME = $rs0['start_time'];
             $END_TIME = $rs0['end_time'];
-            print($BEGIN_TIME."--".$END_TIME);
+            print($BEGIN_TIME . "--" . $END_TIME);
             ?>
             <br/>
             <span id=nowdate>服务器时间：<?php echo date("Y-m-d H:i:s") ?></span>
@@ -269,28 +266,28 @@ if (isset($_GET['cid'])) {
                 <tr>
                     <td><strong>点击右侧按钮下载试题压缩包</strong></td>
                     <td><a class="am-btn am-btn-primary" href="<?php require_once 'config.php';
-                        print("problemzip/problem_".$cid.".zip"); ?>">点击下载</a></td>
+                        print("problemzip/problem_" . $cid . ".zip"); ?>">点击下载</a></td>
                 </tr>
                 <?php
-                $rs = $db->fetchAll("select * from contest_blue_problem where `contest_id`=".$cid." order by `num` asc");
+                $rs = $db->fetchAll("select * from contest_blue_problem where `contest_id`=" . $cid . " order by `num` asc");
 
-                foreach ($rs as $key=>$value) {
+                foreach ($rs as $key => $value) {
                     $pid = $value['problem_id'];
                     $contest_pid = $value['num'];
                     if ($value['type'] == 0) {
                         // result fillblank
-                        $rs1 = $db->fetch("select * from problem_fillblank where problem_id=".$pid);
+                        $rs1 = $db->fetch("select * from problem_fillblank where problem_id=" . $pid);
 
                     } else if ($value['type'] == 1) {
                         // code fillblank
-                        $rs1 = $db->fetch("select * from problem where problem_id=".$pid);
+                        $rs1 = $db->fetch("select * from problem where problem_id=" . $pid);
 
                     } else {
                         // programming
-                        $rs1 = $db->fetch("select * from problem where problem_id=".$pid);
+                        $rs1 = $db->fetch("select * from problem where problem_id=" . $pid);
                     }
                     print("<tr>");
-                    print("<td>".($contest_pid).". ".$rs1['title']."</td>");
+                    print("<td>" . ($contest_pid) . ". " . $rs1['title'] . "</td>");
                     $data['contest_code'] = $cid;
                     $judge['contest_code'] = '=';
                     $data['user_id'] = $_SESSION['user_id'];
@@ -338,9 +335,10 @@ if (isset($_GET['cid'])) {
     </div>
 </div>
 
-<?php require_once "blue-footer.php"?>
+<?php require_once "blue-footer.php" ?>
 <script type="text/javascript">
     var diff = new Date("<?php echo date("Y/m/d H:i:s")?>").getTime() - new Date().getTime();
+
     function clock() {
         var x, h, m, s, n, xingqi, y, mon, d;
         var x = new Date(new Date().getTime() + diff);
@@ -353,9 +351,10 @@ if (isset($_GET['cid'])) {
         m = x.getMinutes();
         s = x.getSeconds();
         n = y + "-" + mon + "-" + d + " " + (h >= 10 ? h : "0" + h) + ":" + (m >= 10 ? m : "0" + m) + ":" + (s >= 10 ? s : "0" + s);
-        document.getElementById('nowdate').innerHTML = "服务器时间："+n;
+        document.getElementById('nowdate').innerHTML = "服务器时间：" + n;
         setTimeout("clock()", 1000);
     }
+
     clock();
 </script>
 
