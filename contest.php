@@ -167,24 +167,29 @@ require_once 'config.php';
                 }
                 $('#my-prompt').modal();
                 $(function () {
-                    var $prompt = $('#my-prompt');
-                    var $confirmBtn = $prompt.find('[data-am-modal-confirm]');
-                    var $cancelBtn = $prompt.find('[data-am-modal-cancel]');
-                    $confirmBtn.unbind("click");
-                    $confirmBtn.on('click', function (e) {
-                        // do something
-                        xmlhttp.open("POST", 'submit.php', true);
-                        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                        //alert(encodeURIComponent($("#ansarea").val()));
-                        xmlhttp.send("contest_pid=" + contest_pid + "&cid=" + cid + "&ans=" + encodeURIComponent($("#ansarea").val()));
-                        $("#ansarea").val("");
-                        $.AMUI.progress.start();
-                    });
+                        var $prompt = $('#my-prompt');
+                        var $confirmBtn = $prompt.find('[data-am-modal-confirm]');
+                        var $cancelBtn = $prompt.find('[data-am-modal-cancel]');
+                        $confirmBtn.unbind("click");
+                        $confirmBtn.on('click', function (e) {
+                            // do something
+                            xmlhttp.open("POST", 'submit.php', true);
+                            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            if $("#ansarea").val().length > 65536 {
+                                alert("Code too long!");
+                                $.AMUI.progress.start();
+                                return;
+                            }
+                            xmlhttp.send("contest_pid=" + contest_pid + "&cid=" + cid + "&ans=" + encodeURIComponent($("#ansarea").val()));
+                            $("#ansarea").val("");
+                            $.AMUI.progress.start();
+                        });
 
-                    //$cancelBtn.off('click.cancel.modal.amui').on('click', function() {
-                    // do something
-                    // });
-                });
+                        //$cancelBtn.off('click.cancel.modal.amui').on('click', function() {
+                        // do something
+                        // });
+                    }
+                );
                 $.AMUI.progress.done();
             }
         }
