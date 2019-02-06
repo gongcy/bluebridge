@@ -1,15 +1,11 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: gongcy
- * Date: 16-10-31
- * Time: 下午8:17
- * 数据库连接类，DBCN
- */
-/*
+ * 数据库连接类 DB Connection
  * 需要开启php的pdo支持，php5.1以上版本支持
  * 实现数据库连接单例化，有三要素 静态变量、静态实例化方法、私有构造函数
+ * @author: gongcy
+ * @date: 16-10-31 下午8:17
  */
 
 class DPDO
