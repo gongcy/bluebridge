@@ -37,7 +37,7 @@ if (isset($_GET['cid']) && isset($_GET['method'])) {
                     $table[$user_id][$pid]['score'] = 0;
                 }
 
-                $rs = $db->fetch("select * from contest_blue_problem where contest_id=".$cid." and num=".$pid);
+                $rs = $db->fetch("select * from contest_blue_problem where contest_id=" . $cid . " and num=" . $pid);
 
                 $table[$user_id][$pid]['score'] = intval($value1['score']);
                 $table[$user_id][$pid]['realsc'] = intval($value1['score']) * intval($rs['score']) / 100;
@@ -60,12 +60,12 @@ if (isset($_GET['cid']) && isset($_GET['method'])) {
             print("<tr>");
             print("<th>排名</th>");
             print("<th>用户名</th>");
-            $problemNum = $db->fetch("select count(*) as num from contest_blue_problem where contest_id=".$cid);
-            $rs1 = $db->fetchAll("select * from contest_blue_problem where contest_id=".$cid);
+            $problemNum = $db->fetch("select count(*) as num from contest_blue_problem where contest_id=" . $cid);
+            $rs1 = $db->fetchAll("select * from contest_blue_problem where contest_id=" . $cid);
 
-            foreach ($rs1 as $key=>$value) {
+            foreach ($rs1 as $key => $value) {
                 $scoresum = $value['score'];
-                print("<th>第 ".($key+1)." 题 ($scoresum 分)</th>");
+                print("<th>第 " . ($key + 1) . " 题 ($scoresum 分)</th>");
             }
 
             print("<th>总分</th>");
@@ -98,8 +98,7 @@ if (isset($_GET['cid']) && isset($_GET['method'])) {
                 print("<td>$sum</td>");
                 print("</tr>");
             }
-        }
-        else if ($method == "ac") {
+        } else if ($method == "ac") {
             foreach ($mData as $key1 => $value1) {
                 $user_id = $value1['nick'] . "  (" . $value1['user_id'] . ")";
                 $pid = $value1['pid'];
@@ -133,11 +132,11 @@ if (isset($_GET['cid']) && isset($_GET['method'])) {
             print("<tr>");
             print("<th>排名</th>");
             print("<th>用户名</th>");
-            $problemNum = $db->fetch("select count(*) as num from contest_blue_problem where contest_id=".$cid);
-            $rs1 = $db->fetchAll("select * from contest_blue_problem where contest_id=".$cid);
+            $problemNum = $db->fetch("select count(*) as num from contest_blue_problem where contest_id=" . $cid);
+            $rs1 = $db->fetchAll("select * from contest_blue_problem where contest_id=" . $cid);
 
-            foreach ($rs1 as $key=>$value) {
-                print("<th>第 ".($key+1)." 题</th>");
+            foreach ($rs1 as $key => $value) {
+                print("<th>第 " . ($key + 1) . " 题</th>");
             }
 
             print("<th>正确题数</th>");
