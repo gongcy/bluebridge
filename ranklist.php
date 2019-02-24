@@ -1,19 +1,19 @@
 <?php
-    session_start();
-    header("Content-type:text/html;charset=utf-8");
-    if (!isset($_GET['cid'])) {
-        die("<h1>该比赛不存在</h1>");
-    } else {
-        require_once 'DBCN.php';
-        $cid = $_GET['cid'];
-        $db = new DB();
-        $rs = $db->fetch("select * from contest_blue where contest_id=".$cid);
-        $BEGIN_TIME = $rs['start_time'];
-        $END_TIME = $rs['end_time'];
-    }
-    if ((time() < strtotime($END_TIME)) && !isset($_SESSION['administrator'])) {
-        die("<h1>比赛期间禁止查看排名!</h1>");
-    }
+session_start();
+header("Content-type:text/html;charset=utf-8");
+if (!isset($_GET['cid'])) {
+    die("<h1>该比赛不存在</h1>");
+} else {
+    require_once 'DBCN.php';
+    $cid = $_GET['cid'];
+    $db = new DB();
+    $rs = $db->fetch("select * from contest_blue where contest_id=" . $cid);
+    $BEGIN_TIME = $rs['start_time'];
+    $END_TIME = $rs['end_time'];
+}
+if ((time() < strtotime($END_TIME)) && !isset($_SESSION['administrator'])) {
+    die("<h1>比赛期间禁止查看排名!</h1>");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,14 +45,16 @@
 
             function getRank() {
                 $.AMUI.progress.start();
-                $("#rankdiv").load("getrank.php?cid=<?php print($cid)?>&method="+method);
+                $("#rankdiv").load("getrank.php?cid=<?php print($cid)?>&method=" + method);
                 $.AMUI.progress.done();
                 timeout = setTimeout(function () {
                     getRank();
                 }, 10000);
             }
+
             clickRank();
         });
+
         function clickRank() {
             method = $("#rmethod option:selected").val();
             if (timeout) {
@@ -64,7 +66,7 @@
         function getRank() {
             $.AMUI.progress.start();
 //            $("#rankdiv").load("getrank_" + method + ".php?cid=<?php //print($cid)?>//");
-            $("#rankdiv").load("getrank.php?cid=<?php print($cid)?>&method="+method);
+            $("#rankdiv").load("getrank.php?cid=<?php print($cid)?>&method=" + method);
             $.AMUI.progress.done();
             timeout = setTimeout(function () {
                 getRank();
@@ -98,7 +100,7 @@
 
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
             data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
-            class="am-icon-bars"></span></button>
+                class="am-icon-bars"></span></button>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 
@@ -118,13 +120,13 @@
             <li class="am-hide-sm-only">
                 <div class="am-topbar-form am-topbar-left am-form-inline" role="search">
                     <div class="am-form-group">
-<!--                        <input type="text" class="am-form-field am-input-sm" placeholder="请在此输入比赛码！" id='contest_code'>-->
+                        <!--                        <input type="text" class="am-form-field am-input-sm" placeholder="请在此输入比赛码！" id='contest_code'>-->
                         <button class="am-btn am-btm-primary" onclick="clickRank()">确定</button>
                     </div>
                 </div>
             </li>
             <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span
-                        class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+                            class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
         </ul>
     </div>
 </header>
