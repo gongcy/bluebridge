@@ -175,7 +175,7 @@ require_once 'config.php';
                             // do something
                             xmlhttp.open("POST", 'submit.php', true);
                             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                            if $("#ansarea").val().length > 65536 {
+                            if ($("#ansarea").val().length > 65536) {
                                 alert("Code too long!");
                                 $.AMUI.progress.start();
                                 return;
