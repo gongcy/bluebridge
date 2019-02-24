@@ -16,11 +16,11 @@ function updateans($sid, $cid)
         return "WA##" . $mData['score'];
     }
     $contest_pid = $mData['pid'];
-    $rs = $db->fetch("select * from contest_blue_problem where contest_id=".$cid." and num=".$contest_pid);
+    $rs = $db->fetch("select * from contest_blue_problem where contest_id=" . $cid . " and num=" . $contest_pid);
     $pid = $rs['problem_id'];
     // 针对结果填空题
     if ($rs['type'] == 0) {
-        $rs1 = $db->fetch("select * from problem_fillblank where problem_id=".$pid);
+        $rs1 = $db->fetch("select * from problem_fillblank where problem_id=" . $pid);
         if ($mData['ans'] == $rs1['solution']) {
             $msg = "AC";
             $upData = 100;
